@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexusStore - 200+ Products E-Commerce Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .fade-in { animation: fadeIn 0.25s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="bg-indigo-600 text-white p-2 rounded-xl font-bold flex items-center justify-center shadow-md">
+                    <i class="fa-solid fa-bag-shopping text-lg"></i>
+                </div>
+                <div>
+                    <span class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">NexusStore</span>
+                    <span class="hidden sm:inline-block ml-2 text-xs bg-indigo-100 text-indigo-700 font-semibold px-2 py-0.5 rounded-full">200+ Products</span>
+                </div>
+            </div>
+            
+            <div class="flex-grow max-w-md mx-2">
+                <div class="relative">
+                    <input type="text" id="searchInput" placeholder="Search 200+ keyboards, mice, laptops, books, fashion..." class="w-full bg-slate-100 text-sm rounded-full pl-9 pr-4 py-2 border border-transparent focus:border-indigo-500 focus:bg-white focus:outline-none transition-all">
+                    <i class="fa-solid fa-search absolute left-3 top-2.5 text-slate-400 text-sm"></i>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-3">
+                <button onclick="openCart()" class="relative bg-slate-100 hover:bg-indigo-50 text-slate-700 hover:text-indigo-600 p-2.5 rounded-full transition-colors flex items-center justify-center">
+                    <i class="fa-solid fa-cart-shopping text-lg"></i>
+                    <span id="cartBadge" class="absolute -top-1 -right-1 bg-indigo-600 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center hidden">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <section class="bg-gradient-to-r from-indigo-900 via-indigo-800 to-violet-900 text-white py-10 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="max-w-xl">
+                <span class="bg-indigo-700/60 text-indigo-200 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Mega Catalog</span>
+                <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold mt-3 tracking-tight leading-tight">Explore 200+ Items across All Categories</h1>
+                <p class="mt-2 text-indigo-100 text-sm sm:text-base">Electronics, Mechanical Keyboards, Gaming Mice, Home Appliances, Books, Fashion & Fitness with real category images.</p>
+            </div>
+            <div class="flex items-center gap-4 bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/10">
+                <div class="text-center px-4 border-r border-white/20">
+                    <span class="block text-2xl font-extrabold text-white" id="totalCountDisplay">200+</span>
+                    <span class="text-xs text-indigo-200">Products</span>
+                </div>
+                <div class="text-center px-4 border-r border-white/20">
+                    <span class="block text-2xl font-extrabold text-white">6</span>
+                    <span class="text-xs text-indigo-200">Categories</span>
+                </div>
+                <div class="text-center px-4">
+                    <span class="block text-2xl font-extrabold text-white">4.8★</span>
+                    <span class="text-xs text-indigo-200">Average Rating</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <main id="shop" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+        <!-- Category Pill Navigation -->
+        <div class="flex flex-col sm:flex-row items-center justify-between mb-6 gap-4 border-b border-slate-200 pb-4">
+            <div id="categoryFilters" class="flex flex-wrap gap-2 justify-center sm:justify-start">
+                <button onclick="filterCategory('All')" class="category-btn bg-indigo-600 text-white px-4 py-2 rounded-xl text-xs font-semibold shadow-sm transition-all">All Products (200+)</button>
+                <button onclick="filterCategory('Electronics')" class="category-btn bg-white hover:bg-slate-100 text-slate-600 px-4 py-2 rounded-xl text-xs font-semibold border border-slate-200 transition-all">Electronics</button>
+                <button onclick="filterCategory('Fashion')" class="category-btn bg-white hover:bg-slate-100 text-slate-600 px-4 py-2 rounded-xl text-xs font-semibold border border-slate-200 transition-all">Fashion</button>
+                <button onclick="filterCategory('Home Appliances')" class="category-btn bg-white hover:bg-slate-100 text-slate-600 px-4 py-2 rounded-xl text-xs font-semibold border border-slate-200 transition-all">Home Appliances</button>
+                <button onclick="filterCategory('Home')" class="category-btn bg-white hover:bg-slate-100 text-slate-600 px-4 py-2 rounded-xl text-xs font-semibold border border-slate-200 transition-all">Home Decor</button>
+                <button onclick="filterCategory('Fitness')" class="category-btn bg-white hover:bg-slate-100 text-slate-600 px-4 py-2 rounded-xl text-xs font-semibold border border-slate-200 transition-all">Fitness</button>
+                <button onclick="filterCategory('Books')" class="category-btn bg-white hover:bg-slate-100 text-slate-600 px-4 py-2 rounded-xl text-xs font-semibold border border-slate-200 transition-all">Books & Reading</button>
+            </div>
+            
+            <div class="flex items-center gap-3 w-full sm:w-auto">
+                <select id="sortSelect" onchange="applyFilters()" class="bg-white border border-slate-200 text-slate-700 text-xs font-medium rounded-xl px-3 py-2 focus:outline-none focus:border-indigo-500 shadow-sm w-full sm:w-auto">
+                    <option value="default">Sort: Featured</option>
+                    <option value="low-high">Price: Low to High</option>
+                    <option value="high-low">Price: High to Low</option>
+                    <option value="rating">Highest Rated</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="flex justify-between items-center mb-4">
+            <span id="resultsCount" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Showing 0 Products</span>
+        </div>
+
+        <!-- Product Grid -->
+        <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <!-- Dynamic Products Injected via JavaScript -->
+        </div>
+
+        <!-- Load More Pagination -->
+        <div class="mt-10 text-center">
+            <button id="loadMoreBtn" onclick="loadMoreProducts()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm px-8 py-3 rounded-xl shadow-md transition-all inline-flex items-center gap-2">
+                <span>Load More Products</span>
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+        </div>
+    </main>
+
+    <div id="cartDrawer" class="fixed inset-0 z-50 overflow-hidden hidden">
+        <div class="absolute inset-0 bg-slate-900/50 backdrop-blur-sm transition-opacity" onclick="closeCart()"></div>
+        <div class="absolute inset-y-0 right-0 max-w-full flex pl-10">
+            <div class="w-screen max-w-md bg-white shadow-2xl flex flex-col">
+                <div class="p-5 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+                    <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-cart-shopping text-indigo-600"></i> Shopping Cart
+                    </h2>
+                    <button onclick="closeCart()" class="text-slate-400 hover:text-slate-600 p-2 rounded-lg">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </div>
+                <div id="cartItemsContainer" class="flex-grow overflow-y-auto p-5 space-y-4">
+                    <!-- Cart items injected here -->
+                </div>
+                <div class="p-5 border-t border-slate-200 bg-slate-50">
+                    <div class="flex justify-between text-base font-bold text-slate-900 mb-4">
+                        <p>Total</p>
+                        <p id="cartSubtotal">$0.00</p>
+                    </div>
+                    <button onclick="checkout()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-4 rounded-xl shadow-md transition-colors flex items-center justify-center gap-2">
+                        <span>Checkout Now</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-white border-t border-slate-200 py-8 mt-12 text-center text-xs text-slate-500">
+        <p>&copy; 2026 NexusStore. 200+ Product Catalog Enabled.</p>
+    </footer>
+
+    <script>
+        // Data Templates for Generating 200+ Realistic Products with Category Specific Unsplash Images
+        const categoriesData = {
+            "Electronics": [
+                { name: "RGB Mechanical Keyboard", price: 79.99, image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500&auto=format&fit=crop&q=80", desc: "Tactile mechanical switches with customizable per-key RGB backlighting." },
+                { name: "Wireless Ergonomic Mouse", price: 49.99, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=500&auto=format&fit=crop&q=80", desc: "Precision optical sensor with dual bluetooth and 2.4G wireless." },
+                { name: "Ultra-Wide Gaming Monitor 34\"", price: 449.99, image: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=500&auto=format&fit=crop&q=80", desc: "144Hz curved QHD display for immersive work and gaming." },
+                { name: "Noise Cancelling Headphones", price: 189.00, image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&auto=format&fit=crop&q=80", desc: "Premium sound quality with active noise cancellation." },
+                { name: "HD Webcam 1080p", price: 59.99, image: "https://images.unsplash.com/photo-1585060544812-6b45742d762f?w=500&auto=format&fit=crop&q=80", desc: "Auto-focus lens with built-in dual noise reduction microphone." },
+                { name: "USB-C Multiport Docking Station", price: 69.50, image: "https://images.unsplash.com/photo-1544652478-6653e09f18a2?w=500&auto=format&fit=crop&q=80", desc: "Dual HDMI, USB 3.0, Gigabit Ethernet and 100W Power Delivery." },
+                { name: "Smartwatch Sport Edition", price: 129.99, image: "https://images.unsplash.com/photo-1575311373937-040b8e1fd5b6?w=500&auto=format&fit=crop&q=80", desc: "GPS tracking, SPO2 monitor and 10-day battery life." }
+            ],
+            "Fashion": [
+                { name: "Classic Leather Jacket", price: 159.00, image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500&auto=format&fit=crop&q=80", desc: "100% genuine leather classic biker style jacket." },
+                { name: "Minimalist Wristwatch", price: 119.50, image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&auto=format&fit=crop&q=80", desc: "Sleek analog dial with stainless steel mesh strap." },
+                { name: "Urban Denim Jacket", price: 89.00, image: "https://images.unsplash.com/photo-1576995853123-5a10305d93c0?w=500&auto=format&fit=crop&q=80", desc: "Vintage wash denim trucker jacket with comfortable fit." },
+                { name: "Polarized Sunglasses", price: 45.00, image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=500&auto=format&fit=crop&q=80", desc: "UV400 protection lightweight matte frame sunglasses." },
+                { name: "Leather Travel Duffel Bag", price: 139.99, image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500&auto=format&fit=crop&q=80", desc: "Handcrafted duffel bag perfect for weekend travel." }
+            ],
+            "Home Appliances": [
+                { name: "Digital Air Fryer 5.5L", price: 99.99, image: "https://images.unsplash.com/photo-1585515320310-259814833e62?w=500&auto=format&fit=crop&q=80", desc: "Rapid 360 degree air circulation for oil-free crisp cooking." },
+                { name: "Robot Vacuum Cleaner", price: 220.00, image: "https://images.unsplash.com/photo-1518640467707-6811f4a6ab73?w=500&auto=format&fit=crop&q=80", desc: "Smart LiDAR navigation with app-controlled schedule vacuuming." },
+                { name: "Espresso Coffee Machine", price: 179.00, image: "https://images.unsplash.com/photo-1517668808822-9a428a209930?w=500&auto=format&fit=crop&q=80", desc: "15-bar Italian pressure pump for rich espresso shots." },
+                { name: "High-Speed Countertop Blender", price: 69.99, image: "https://images.unsplash.com/photo-1570222094114-d054a817e56b?w=500&auto=format&fit=crop&q=80", desc: "1200W motor crushing ice and smoothies in seconds." }
+            ],
+            "Home": [
+                { name: "Smart Touch Desk Lamp", price: 39.99, image: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=500&auto=format&fit=crop&q=80", desc: "3 color temperatures with wireless phone charger base." },
+                { name: "Ceramic Plant Pots Set", price: 34.50, image: "https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=500&auto=format&fit=crop&q=80", desc: "Handcrafted ceramic succulent planters with wooden base." },
+                { name: "Ergonomic Mesh Office Chair", price: 189.99, image: "https://images.unsplash.com/photo-1580481072645-022f9a6d1276?w=500&auto=format&fit=crop&q=80", desc: "Lumbar support with 3D armrests and breathable mesh." }
+            ],
+            "Fitness": [
+                { name: "Non-Slip Yoga Mat 6mm", price: 29.99, image: "https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?w=500&auto=format&fit=crop&q=80", desc: "Eco-friendly TPE material with extra cushion support." },
+                { name: "Adjustable Dumbbell Pair", price: 249.00, image: "https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?w=500&auto=format&fit=crop&q=80", desc: "Quick weight adjustment system from 5lbs to 50lbs." },
+                { name: "Resistance Exercise Bands Set", price: 19.99, image: "https://images.unsplash.com/photo-1598289431512-b97b0917affc?w=500&auto=format&fit=crop&q=80", desc: "5 stackable latex bands for home workouts." }
+            ],
+            "Books": [
+                { name: "Paperwhite E-Reader 16GB", price: 139.99, image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=500&auto=format&fit=crop&q=80", desc: "Glare-free 300 ppi display with warm light adjustment." },
+                { name: "Bestseller Hardcover Novel", price: 24.99, image: "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=500&auto=format&fit=crop&q=80", desc: "Inspiring hardcover fiction novel for book lovers." },
+                { name: "Minimalist Bookends Pair", price: 21.00, image: "https://images.unsplash.com/photo-1532012197267-da84d127e765?w=500&auto=format&fit=crop&q=80", desc: "Heavy metal non-skid book holders for bookshelves." }
+            ]
+        };
+
+        // Generating full dataset of 210 products programmatically
+        let products = [];
+        let idCounter = 1;
+
+        const adjectives = ["Pro", "Ultra", "Elite", "Compact", "Studio", "Essential", "Max", "Prime", "Series 5", "Series X"];
+
+        Object.keys(categoriesData).forEach(cat => {
+            const baseList = categoriesData[cat];
+            baseList.forEach((base) => {
+                // Add base product
+                products.push({
+                    id: idCounter++,
+                    name: base.name,
+                    category: cat,
+                    price: base.price,
+                    rating: +(4.2 + (Math.random() * 0.7)).toFixed(1),
+                    reviews: Math.floor(20 + Math.random() * 300),
+                    image: base.image,
+                    description: base.desc
+                });
+
+                // Generate variations to reach 200+
+                for (let i = 0; i < 9; i++) {
+                    const adj = adjectives[i % adjectives.length];
+                    const priceOffset = +(Math.random() * 30 - 10).toFixed(2);
+                    products.push({
+                        id: idCounter++,
+                        name: `${adj} ${base.name}`,
+                        category: cat,
+                        price: Math.max(12.99, +(base.price + priceOffset).toFixed(2)),
+                        rating: +(4.0 + (Math.random() * 0.9)).toFixed(1),
+                        reviews: Math.floor(10 + Math.random() * 450),
+                        image: base.image,
+                        description: `${adj} edition of ${base.name.toLowerCase()} designed for maximum performance and durability.`
+                    });
+                }
+            });
+        });
+
+        let cart = [];
+        let currentCategory = 'All';
+        let displayedCount = 20;
+
+        function renderProducts(resetLimit = false) {
+            if (resetLimit) displayedCount = 20;
+
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            let filtered = products.filter(p => {
+                const matchesCat = currentCategory === 'All' || p.category === currentCategory;
+                const matchesQuery = p.name.toLowerCase().includes(query) || p.description.toLowerCase().includes(query) || p.category.toLowerCase().includes(query);
+                return matchesCat && matchesQuery;
+            });
+            
+            const sortVal = document.getElementById('sortSelect').value;
+            if (sortVal === 'low-high') filtered.sort((a,b) => a.price - b.price);
+            if (sortVal === 'high-low') filtered.sort((a,b) => b.price - a.price);
+            if (sortVal === 'rating') filtered.sort((a,b) => b.rating - a.rating);
+
+            document.getElementById('resultsCount').textContent = `Showing ${Math.min(displayedCount, filtered.length)} of ${filtered.length} Products`;
+            document.getElementById('totalCountDisplay').textContent = products.length;
+
+            const grid = document.getElementById('productGrid');
+            const itemsToDisplay = filtered.slice(0, displayedCount);
+
+            if (itemsToDisplay.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-16 text-slate-400 font-medium">No products match your search or filter.</div>`;
+                document.getElementById('loadMoreBtn').classList.add('hidden');
+                return;
+            }
+
+            grid.innerHTML = itemsToDisplay.map(p => `
+                <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col fade-in">
+                    <div class="relative overflow-hidden group bg-slate-100 aspect-square">
+                        <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/400x400/e2e8f0/64748b?text=Product'">
+                        <span class="absolute top-2.5 left-2.5 bg-white/90 backdrop-blur-md text-slate-800 text-[10px] font-bold px-2 py-0.5 rounded-md shadow-sm uppercase tracking-wider">${p.category}</span>
+                    </div>
+                    <div class="p-4 flex flex-col flex-grow">
+                        <div class="flex items-center gap-1 text-amber-500 text-xs mb-1">
+                            <i class="fa-solid fa-star"></i>
+                            <span class="font-bold text-slate-700">${p.rating}</span>
+                            <span class="text-slate-400 text-[10px]">(${p.reviews})</span>
+                        </div>
+                        <h3 class="font-bold text-slate-900 text-sm mb-1 line-clamp-1">${p.name}</h3>
+                        <p class="text-slate-500 text-xs line-clamp-2 mb-3 leading-relaxed">${p.description}</p>
+                        <div class="mt-auto flex items-center justify-between pt-2 border-t border-slate-100">
+                            <span class="text-base font-extrabold text-indigo-600">$${p.price.toFixed(2)}</span>
+                            <button onclick="addToCart(${p.id})" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-3 py-2 rounded-xl shadow-sm transition-colors flex items-center gap-1">
+                                <i class="fa-solid fa-cart-plus"></i> Add
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            const loadMoreBtn = document.getElementById('loadMoreBtn');
+            if (displayedCount >= filtered.length) {
+                loadMoreBtn.classList.add('hidden');
+            } else {
+                loadMoreBtn.classList.remove('hidden');
+            }
+        }
+
+        function loadMoreProducts() {
+            displayedCount += 20;
+            renderProducts(false);
+        }
+
+        function filterCategory(category) {
+            currentCategory = category;
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                if (btn.textContent.includes(category)) {
+                    btn.className = "category-btn bg-indigo-600 text-white px-4 py-2 rounded-xl text-xs font-semibold shadow-sm transition-all";
+                } else {
+                    btn.className = "category-btn bg-white hover:bg-slate-100 text-slate-600 px-4 py-2 rounded-xl text-xs font-semibold border border-slate-200 transition-all";
+                }
+            });
+            renderProducts(true);
+        }
+
+        function applyFilters() {
+            renderProducts(true);
+        }
+
+        document.getElementById('searchInput').addEventListener('input', () => renderProducts(true));
+
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const existing = cart.find(item => item.id === productId);
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const badge = document.getElementById('cartBadge');
+            if (totalCount > 0) {
+                badge.textContent = totalCount;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+
+            const container = document.getElementById('cartItemsContainer');
+            if (cart.length === 0) {
+                container.innerHTML = `<div class="text-center py-12 text-slate-400"><i class="fa-solid fa-cart-shopping text-3xl mb-3"></i><p class="text-xs">Your cart is empty.</p></div>`;
+            } else {
+                container.innerHTML = cart.map(item => `
+                    <div class="flex items-center gap-3 bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+                        <img src="${item.image}" alt="${item.name}" class="w-12 h-12 object-cover rounded-lg">
+                        <div class="flex-grow">
+                            <h4 class="font-bold text-xs text-slate-900 line-clamp-1">${item.name}</h4>
+                            <p class="text-xs text-indigo-600 font-bold">$${item.price.toFixed(2)}</p>
+                            <div class="flex items-center gap-2 mt-1">
+                                <button onclick="changeQty(${item.id}, -1)" class="w-5 h-5 bg-white border border-slate-200 rounded text-xs flex items-center justify-center hover:bg-slate-100">-</button>
+                                <span class="text-xs font-semibold">${item.quantity}</span>
+                                <button onclick="changeQty(${item.id}, 1)" class="w-5 h-5 bg-white border border-slate-200 rounded text-xs flex items-center justify-center hover:bg-slate-100">+</button>
+                            </div>
+                        </div>
+                        <button onclick="removeFromCart(${item.id})" class="text-slate-400 hover:text-red-500 p-1"><i class="fa-solid fa-trash text-xs"></i></button>
+                    </div>
+                `).join('');
+            }
+
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            document.getElementById('cartSubtotal').textContent = `$${subtotal.toFixed(2)}`;
+        }
+
+        function changeQty(id, delta) {
+            const item = cart.find(i => i.id === id);
+            if (item) {
+                item.quantity += delta;
+                if (item.quantity <= 0) {
+                    cart = cart.filter(i => i.id !== id);
+                }
+            }
+            updateCartUI();
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(i => i.id !== id);
+            updateCartUI();
+        }
+
+        function openCart() {
+            document.getElementById('cartDrawer').classList.remove('hidden');
+        }
+
+        function closeCart() {
+            document.getElementById('cartDrawer').classList.add('hidden');
+        }
+
+        function checkout() {
+            if (cart.length === 0) return;
+            alert("Order placed successfully! Thank you for shopping with NexusStore.");
+            cart = [];
+            updateCartUI();
+            closeCart();
+        }
+
+        window.onload = function() {
+            renderProducts(true);
+        };
+    </script>
+</body>
+</html>
